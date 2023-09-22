@@ -4426,7 +4426,7 @@ static sint rtl8812au_fill_radiotap_hdr(_adapter *padapter, union recv_frame *pr
         ret = _FAIL;
         return ret;
     }
-    out:
+
     /* write skb information to recv frame */
     skb_reset_mac_header(pskb);
     precvframe->u.hdr.len = pskb->len;
