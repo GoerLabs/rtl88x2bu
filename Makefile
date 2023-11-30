@@ -2353,7 +2353,7 @@ CROSS_COMPILE ?= aarch64-linux-gnu-
 KSRC ?= $(BSP_KERNEL_PATH)
 
 KO_MODULE_NAME := 88x2bu
-OUT := $(BSP_MODULES_OUT)/$(KO_MODULE_NAME)
+KO_MODULE_OUT := $(BSP_MODULES_OUT)/$(KO_MODULE_NAME)
 
 endif # CONFIG_PLATFORM_UNCSOC_UMS9620
 
@@ -2505,22 +2505,22 @@ else
 
 export CONFIG_RTL8822BU = m
 
-OUT ?= $(CURDIR)/out
+KO_MODULE_OUT ?= $(CURDIR)/out
 
 all: modules
 
 .PHONY: modules modules_install clean
 
 modules:
-	@mkdir -p $(OUT) && ln -snf $(CURDIR)/Makefile $(OUT)/Makefile
-	@ln -snf $(CURDIR) $(OUT)/source
-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(shell pwd)  modules
+	@mkdir -p $(KO_MODULE_OUT) && ln -snf $(CURDIR)/Makefile $(KO_MODULE_OUT)/Makefile
+	@ln -snf $(CURDIR) $(KO_MODULE_OUT)/source
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(KO_MODULE_OUT) src=$(CURDIR) $@
 
 modules_install:
-	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(OUT) src=$(CURDIR) $@
+	$(MAKE) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) -C $(KSRC) M=$(KO_MODULE_OUT) $@
 
 clean:
-	rm -rf $(OUT)
+	rm -rf $(KO_MODULE_OUT)
 
 strip:
 	$(CROSS_COMPILE)strip $(MODULE_NAME).ko --strip-unneeded
